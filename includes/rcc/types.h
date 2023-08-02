@@ -8,4 +8,8 @@ typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
+#define NULL ((void*)0)
+#define null NULL
 #include<stdbool.h>
+
+bool isNameOK(char* name);

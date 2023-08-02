@@ -6,7 +6,8 @@ enum step{
     preprocess,
     compile,
     assemble,
-    link
+    link,
+    help
 };
 
 struct opts{
@@ -18,6 +19,4 @@ struct opts{
     alignas(i64) char* name;
 };
 
-extern struct opts _opt;
-
-void get_opts(struct opts * value);
+void get_opts(struct opts * value,int argc, char const *argv[]);
