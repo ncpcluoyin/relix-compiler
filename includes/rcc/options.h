@@ -18,4 +18,6 @@ struct opts{
     alignas(i64) char* name;
 };
 
+extern struct opts _opt;
+
 void get_opts(struct opts * value);
