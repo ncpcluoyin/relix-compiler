@@ -13,3 +13,6 @@ typedef int64_t i64;
 #include<stdbool.h>
 
 bool isNameOK(char* name);
+#define loop for(;;)
+#define loop_c(x) for(i32 i = 0;i != x;i++)
+#define elif else if

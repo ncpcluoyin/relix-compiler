@@ -1,0 +1,2 @@
+#define UNKNOWN_OPTION_ERROR 1
+#define OPT_LEVEL_ERROR 2
