@@ -17,6 +17,10 @@ struct opts{
     alignas(i64) char** file_p;
     alignas(i32) bool rename;
     alignas(i64) char* name;
+    alignas(i64) char ** include_dir;
+    alignas(i32) u32 dir_c;
+    alignas(i32) u32 used_dir_c;
 };
 
 void get_opts(struct opts * value,int argc, char const *argv[]);
+void close_opts(struct opts * value);

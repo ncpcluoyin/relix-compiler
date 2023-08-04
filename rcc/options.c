@@ -5,6 +5,7 @@
 #include<stdlib.h>
 #include<exit_codes.h>
 #include<ctype.h>
+#include<unistd.h>
 
 #define default_name "unknown"
 
@@ -15,7 +16,18 @@ static void empty(struct opts* value){
     value->file_p = null;
     value->rename = false;
     value->name = default_name;
+    value->used_dir_c = 0;
+    value->include_dir = (char**) malloc(sizeof(char*)*4);
+    if(value->include_dir == NULL){
+        printf("\ncan't alloc memory!\n");
+        __exit(CAN_NOT_ALLOC_MEMORY);
+    }
+    value->dir_c = 4;
 };
+
+void close_opts(struct opts * value){
+    free(value->include_dir);
+}
 
 void get_opts(struct opts * value,int argc, char const *argv[]){
     empty(value);//reset the structure
@@ -49,15 +61,28 @@ void get_opts(struct opts * value,int argc, char const *argv[]){
                     {
                         value->_step = assemble;
                     }elif (pre[1] == "I"){
-                        //TODO
+                        processed++;
+                        pre = argv[processed];
+                        if(!access(pre,F_OK)){
+                            printf("directory :\"%s\" not found",pre);
+                            __exit(DIR_DO_NOT_EXIST);
+                        }
+                        if(value->used_dir_c == value->dir_c){
+                            char** tmp = NULL;
+                            tmp = realloc(value->include_dir,sizeof(char*) * value->dir_c * 2);
+                            if(tmp == NULL){
+                                printf("\ncan't alloc memory!\n");
+                                __exit(CAN_NOT_ALLOC_MEMORY);
+                            }
+                        }
                     }
                 }elif(strlen(pre) == 3){
                     if(pre[1] == "O"){
                         if(isdigit(pre[2])){
                             i32 num = atoi(pre[2]+'0');
                             if(num < 0 || num > 4){
-                                printf("opt_level should be 0,1,2,3 or 4");
-                                exit(OPT_LEVEL_ERROR);
+                                puts("opt_level should be 0,1,2,3 or 4");
+                                __exit(OPT_LEVEL_ERROR);
                             }
                             value->opt_level = (u8)num;
                         }
@@ -70,9 +95,8 @@ void get_opts(struct opts * value,int argc, char const *argv[]){
             }
         }else
         {
-            printf("unknown option: %s",pre);
-            exit(UNKNOWN_OPTION_ERROR);
+            printf("unknown option: %s\n",pre);
+            __exit(UNKNOWN_OPTION_ERROR);
         }
-        
     }
 };
