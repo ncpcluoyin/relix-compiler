@@ -1,1 +1,1 @@
-add_executable(rcc rcc.c)
+add_executable(rcc rcc.c sList.c)
